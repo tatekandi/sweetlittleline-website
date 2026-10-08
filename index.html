@@ -6,48 +6,221 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap">
-<style>
-:root{--ground:#FFFFFF;--ink:#1A1714;--secondary:#6B6560;--accent:#B83F2E;--label:#2F5D3A;--border:#E4E8E0;--sunken:#F2F5F0}
-@media (prefers-color-scheme:dark){:root{--ground:#0F1411;--ink:#F1F0EC;--secondary:#9B9A93;--accent:#FF8D77;--label:#A8CDAF;--border:#2A332B;--sunken:#161D17}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--ground);color:var(--ink);font-family:Nunito,ui-rounded,system-ui,-apple-system,sans-serif;font-weight:600;line-height:1.6;-webkit-font-smoothing:antialiased}
-.wrap{max-width:46rem;margin:0 auto;padding:3rem 1rem 5rem}
-a{color:var(--accent)}
-a:hover{opacity:.75}
-h1{font-size:2rem;font-weight:900;line-height:1.15;margin:0 0 .5rem}
-h2{font-size:1.15rem;font-weight:900;margin:2.5rem 0 .5rem}
-h3{font-size:1rem;font-weight:800;margin:1.75rem 0 .25rem}
-p,li{color:var(--ink)}
-.lede{color:var(--secondary);font-size:1.05rem;margin:0 0 .5rem}
-.meta{color:var(--secondary);font-size:.85rem;font-weight:700}
-.mark{display:flex;align-items:center;gap:.4rem;margin-bottom:1.75rem}
-.mark .line{width:2.2rem;height:.58rem;border-radius:.29rem;background:var(--accent)}
-.mark .dot{width:.6rem;height:.6rem;border-radius:50%;background:var(--label)}
-.eyebrow{font-size:.75rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--label);margin-bottom:.4rem}
-ul{padding-left:1.15rem}
-li{margin:.3rem 0}
-.card{background:var(--sunken);border:1px solid var(--border);border-radius:1rem;padding:1.1rem 1.25rem;margin:1.25rem 0}
-.card p:last-child,.card ul:last-child{margin-bottom:0}
-footer{margin-top:3.5rem;padding-top:1.25rem;border-top:1px solid var(--border);color:var(--secondary);font-size:.85rem}
-footer a{margin-right:1rem}
-</style>
 <title>Sweet Little Line — one line, on their lock screen</title>
 <meta name="description" content="A free iPhone app for couples. Drop one short line and it appears on their lock screen.">
+<style>
+:root{
+  --ground:#FFFFFF;--surface:#FFFFFF;--sunken:#F2F5F0;--ink:#1A1714;--secondary:#6B6560;
+  --line-accent:#B83F2E;--accent-fill:#B83F2E;--coral:#E25A47;--accent-tint:#FDE7E1;
+  --label:#2F5D3A;--label-tint:#E8F0E4;--border:#E4E8E0;--rule:#EEF1EB;
+  --shadow:rgba(26,23,20,.16);
+  /* fixed — these live on a lock screen, outside the app's light/dark scheme */
+  --sage:#D6E3D1;--forest-deep:#1F3A27;--line-on-sage:#A33624;
+  --glass:rgba(255,255,255,.66);--glass-edge:rgba(255,255,255,.8);--bezel:#1B211B;
+  --font:"Nunito",ui-rounded,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --ground:#0F1411;--surface:#19201A;--sunken:#161D17;--ink:#F1F0EC;--secondary:#9B9A93;
+    --line-accent:#FF8D77;--accent-fill:#C4432F;--coral:#FF8D77;--accent-tint:#47211A;
+    --label:#A8CDAF;--label-tint:#1F2B22;--border:#2A332B;--rule:#202820;
+    --shadow:rgba(0,0,0,.5);
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font);font-weight:600;line-height:1.6;-webkit-font-smoothing:antialiased}
+.page{max-width:58rem;margin:0 auto;padding-inline:1.25rem;padding-block:3rem 4rem;display:flex;flex-direction:column;gap:4.5rem}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+a{color:var(--line-accent);text-decoration-thickness:.08em;text-underline-offset:.18em}
+a:hover{opacity:.72}
+a:focus-visible{outline:2px solid var(--line-accent);outline-offset:3px;border-radius:.35rem}
+.eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--label)}
+
+.mark{display:flex;align-items:center;gap:.4rem;width:fit-content;text-decoration:none}
+.mark .bar{width:2.2rem;height:.58rem;border-radius:.29rem;background:var(--coral)}
+.mark .dot{width:.6rem;height:.6rem;border-radius:50%;background:var(--label)}
+
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:3rem;align-items:center}
+.hero-copy{display:flex;flex-direction:column;gap:1.1rem;min-width:0}
+.hero h1{font-size:clamp(2.1rem,5.4vw,3.1rem);font-weight:900;line-height:1.08;letter-spacing:-.015em}
+.lede{color:var(--secondary);font-size:1.08rem;max-width:34ch}
+.hero-meta{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.3rem}
+.pill{font-size:.78rem;font-weight:800;padding:.3rem .7rem;border-radius:999px;background:var(--label-tint);color:var(--label)}
+
+.device{justify-self:center;width:min(16.5rem,100%);container-type:inline-size}
+.phone{width:100%;font-size:13px;font-size:5.1cqw;aspect-ratio:9/19.2;background:var(--bezel);border-radius:3.2em;padding:.6em;box-shadow:0 1.3rem 2.8rem -1rem var(--shadow)}
+.screen{height:100%;border-radius:2.7em;background:var(--sage);overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:1.3em .9em}
+.island{width:4.1em;height:1.2em;border-radius:.6em;background:var(--bezel);flex:none}
+.lock-date{margin-top:1.7em;font-size:.88em;font-weight:800;color:var(--forest-deep);opacity:.7}
+.lock-time{font-size:3.8em;font-weight:800;line-height:1.05;color:var(--forest-deep);letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.w-row{margin-top:1.7em;display:flex;gap:.6em;align-items:stretch;justify-content:center;width:100%;animation:settle .7s cubic-bezier(.22,.9,.3,1) both}
+.w-rect,.w-circ{background:var(--glass);border:1px solid var(--glass-edge);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.w-rect{width:10.2em;height:4.8em;border-radius:1.25em;padding:.52em .7em;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.w-who{font-size:.62em;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--forest-deep);opacity:.68}
+.w-line{margin-top:.18em;font-size:.88em;font-weight:800;line-height:1.24;color:var(--line-on-sage)}
+.w-ago{margin-top:.2em;font-size:.6em;font-weight:700;color:var(--forest-deep);opacity:.6}
+.w-circ{width:4.8em;height:4.8em;flex:none;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.06em}
+.w-circ .ct{font-size:.92em;font-weight:800;color:var(--line-on-sage);font-variant-numeric:tabular-nums;line-height:1}
+.w-circ .cl{font-size:.52em;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--forest-deep);opacity:.6;line-height:1}
+@keyframes settle{from{opacity:.25;transform:translateY(.5em)}to{opacity:1;transform:none}}
+
+.section-head{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.6rem}
+.section-head h2{font-size:1.6rem;font-weight:900;letter-spacing:-.01em}
+.steps{counter-reset:step}
+.step-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:1.1rem;list-style:none;margin:0;padding:0}
+.step{counter-increment:step;background:var(--sunken);border:1px solid var(--border);border-radius:1.1rem;padding:1.1rem 1.15rem 1.25rem;display:flex;flex-direction:column;gap:.55rem;min-width:0}
+.step-n{font-size:.7rem;font-weight:900;letter-spacing:.1em;color:var(--label)}
+.step-n::before{content:"Step " counter(step)}
+.step h3{font-size:1.05rem;font-weight:900}
+.step p{font-size:.94rem;color:var(--secondary)}
+.vignette{margin-top:.25rem;background:var(--surface);border:1px solid var(--border);border-radius:.8rem;padding:.8rem;display:flex;align-items:center;justify-content:center;min-height:4.6rem}
+.code-row{display:flex;gap:.3rem}
+.code-cell{width:1.6rem;height:2.05rem;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:.4rem;background:var(--sunken);font-size:.92rem;font-weight:900;color:var(--ink);font-variant-numeric:tabular-nums}
+.compose{width:100%;display:flex;flex-direction:column;gap:.45rem}
+.field{border:1px solid var(--border);border-radius:.6rem;background:var(--sunken);padding:.45rem .55rem;display:flex;align-items:baseline;gap:.4rem;font-size:.82rem;font-weight:700;min-width:0}
+.field .txt{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1}
+.field .count{font-size:.68rem;font-weight:800;color:var(--secondary);flex:none;font-variant-numeric:tabular-nums}
+.drop{align-self:flex-start;background:var(--accent-fill);color:#FFFFFF;font-size:.78rem;font-weight:800;padding:.36rem .8rem;border-radius:.6rem}
+.mini{width:100%;background:var(--sage);border-radius:.65rem;padding:.55rem .6rem}
+.mini-card{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.85);border-radius:.5rem;padding:.42rem .55rem}
+.mini-who{font-size:.52rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--forest-deep);opacity:.68}
+.mini-line{font-size:.78rem;font-weight:800;color:var(--line-on-sage);line-height:1.25;margin-top:.12rem}
+.after-steps{margin-top:1.3rem;font-size:1rem;color:var(--secondary);max-width:52ch}
+
+.restraint{background:var(--sunken);border:1px solid var(--border);border-radius:1.4rem;padding:1.9rem 1.6rem}
+.nots{list-style:none;margin:1.1rem 0 0;padding:0;display:grid;gap:.75rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.nots li{display:flex;gap:.6rem;align-items:flex-start;min-width:0}
+.nots .no{flex:none;width:1.25rem;height:1.25rem;border-radius:50%;background:var(--accent-tint);color:var(--line-accent);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;line-height:1;margin-top:.22rem}
+.nots b{display:block;font-weight:900;font-size:.98rem}
+.nots span.d{display:block;font-size:.9rem;color:var(--secondary);line-height:1.5}
+.restraint-close{margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--rule);font-size:1.02rem;font-weight:800;color:var(--label)}
+
+.closing{display:flex;flex-direction:column;gap:.7rem;align-items:flex-start}
+.closing h2{font-size:1.5rem;font-weight:900}
+.closing p{color:var(--secondary);max-width:46ch}
+.status{display:inline-flex;align-items:center;gap:.5rem;background:var(--label-tint);color:var(--label);font-size:.88rem;font-weight:800;padding:.5rem .9rem;border-radius:999px;margin-top:.3rem}
+.status .tick{width:.45rem;height:.45rem;border-radius:50%;background:var(--label)}
+
+footer{border-top:1px solid var(--rule);padding-top:1.3rem;display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;align-items:center;font-size:.86rem;font-weight:700;color:var(--secondary)}
+footer .sp{flex:1 1 auto}
+
+@media (max-width:46rem){
+  .hero{grid-template-columns:minmax(0,1fr);gap:2.4rem}
+  .page{gap:3.5rem;padding-block:2.25rem 3rem}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
 </head>
-<body><div class="wrap">
-<div class="mark"><span class="line"></span><span class="dot"></span></div>
-<h1>One line, on their lock screen.</h1>
-<p class="lede">Sweet Little Line is a small, free iPhone app for two people. You each drop one short line — a status, a feeling, or a nudge about milk — and it appears on the other's lock screen.</p>
-<p>No chat. No history. No feed. For couples who are apart all day, a glance replaces a text.</p>
-<div class="card">
-<p class="eyebrow">How it works</p>
-<ul>
-<li>Pair once with a six-character code. No email, no phone number, no account to make.</li>
-<li>Type up to forty characters and drop your line.</li>
-<li>It lands on their lock screen widget, with how long ago you set it.</li>
-<li>Let it clear itself after an hour, two, or four — or leave it until you change it.</li>
-</ul>
-</div>
-<p class="meta">Coming soon to the App Store.</p>
-<footer><a href="/">Sweet Little Line</a><a href="/privacy/">Privacy</a><a href="/support/">Support</a><br><span>hello@sweetlittleline.app</span></footer>
+<body><div class="page">
+
+  <header class="hero">
+    <div class="hero-copy">
+      <a class="mark" href="/" aria-label="Sweet Little Line home"><span class="bar"></span><span class="dot"></span></a>
+      <h1>One line, on their lock screen.</h1>
+      <p class="lede">You each drop one short line. A status, a feeling, or a nudge about milk. It appears on the other&rsquo;s lock screen, and that&rsquo;s the whole app.</p>
+      <div class="hero-meta">
+        <span class="pill">Free</span>
+        <span class="pill">iPhone</span>
+        <span class="pill">For two people</span>
+      </div>
+    </div>
+
+    <div class="device">
+      <div class="phone">
+        <div class="screen">
+          <div class="island"></div>
+          <p class="lock-date">Thursday 8 October</p>
+          <p class="lock-time">9:41</p>
+          <div class="w-row">
+            <div class="w-rect">
+              <p class="w-who">Nicole</p>
+              <p class="w-line">Bring the good bread.</p>
+              <p class="w-ago">12 min ago</p>
+            </div>
+            <div class="w-circ">
+              <span class="ct">12 min</span>
+              <span class="cl">ago</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="steps">
+    <div class="section-head">
+      <p class="eyebrow">How it works</p>
+      <h2>Three things, then it&rsquo;s out of your way.</h2>
+    </div>
+    <ol class="step-grid">
+      <li class="step">
+        <p class="step-n"></p>
+        <h3>Pair once</h3>
+        <p>One six-character code, typed in once. No email, no phone number, nothing to sign up for.</p>
+        <div class="vignette" aria-hidden="true">
+          <div class="code-row">
+            <span class="code-cell">K</span><span class="code-cell">7</span><span class="code-cell">M</span>
+            <span class="code-cell">2</span><span class="code-cell">Q</span><span class="code-cell">4</span>
+          </div>
+        </div>
+      </li>
+      <li class="step">
+        <p class="step-n"></p>
+        <h3>Drop your line</h3>
+        <p>Up to forty characters. Short enough that you say the thing instead of circling it.</p>
+        <div class="vignette" aria-hidden="true">
+          <div class="compose">
+            <div class="field">
+              <span class="txt">Home by seven. Bring the good bread.</span>
+              <span class="count">36/40</span>
+            </div>
+            <span class="drop">Drop my line</span>
+          </div>
+        </div>
+      </li>
+      <li class="step">
+        <p class="step-n"></p>
+        <h3>It lands</h3>
+        <p>On their lock screen widget, with how long ago you set it. No notification unless they want one.</p>
+        <div class="vignette" aria-hidden="true">
+          <div class="mini">
+            <div class="mini-card">
+              <p class="mini-who">Tate</p>
+              <p class="mini-line">Thinking of you today.</p>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ol>
+    <p class="after-steps">Lines can clear themselves after an hour, two, or four &mdash; or stay until you change them. Six quick lines you write once sit under the box for the ones you send most.</p>
+  </section>
+
+  <section class="restraint">
+    <p class="eyebrow">What it doesn&rsquo;t do</p>
+    <ul class="nots">
+      <li><span class="no" aria-hidden="true">&times;</span><span><b>No chat</b><span class="d">There is nowhere to reply. A line is a glance, not an opening.</span></span></li>
+      <li><span class="no" aria-hidden="true">&times;</span><span><b>No history</b><span class="d">Yesterday&rsquo;s line is gone. Only the one you set now exists.</span></span></li>
+      <li><span class="no" aria-hidden="true">&times;</span><span><b>No feed</b><span class="d">Nothing to scroll, nothing to catch up on, nothing waiting for you.</span></span></li>
+      <li><span class="no" aria-hidden="true">&times;</span><span><b>No read receipts</b><span class="d">You won&rsquo;t know whether they looked. That was always the honest part.</span></span></li>
+    </ul>
+    <p class="restraint-close">For two people apart all day, a glance replaces a text.</p>
+  </section>
+
+  <section class="closing">
+    <p class="eyebrow">Where it&rsquo;s up to</p>
+    <h2>Nearly there.</h2>
+    <p>Sweet Little Line is being tested by its first couple before it goes to the App Store. Free when it lands, with one small advert at the bottom of the main screen.</p>
+    <span class="status"><span class="tick" aria-hidden="true"></span>Coming soon to the App Store</span>
+    <p style="margin-top:.6rem">Questions, or want to know when it&rsquo;s out? Write to <a href="mailto:hello@sweetlittleline.app">hello@sweetlittleline.app</a></p>
+  </section>
+
+  <footer>
+    <a href="/">Sweet Little Line</a>
+    <span class="sp"></span>
+    <a href="/privacy/">Privacy</a>
+    <a href="/support/">Support</a>
+  </footer>
+
 </div></body></html>
